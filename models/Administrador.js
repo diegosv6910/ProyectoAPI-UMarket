@@ -37,3 +37,5 @@ class Administrador{
         //Metodo que permite enviar mensaje a un perfil.
     }
 }
+
+module.exports = Administrador;

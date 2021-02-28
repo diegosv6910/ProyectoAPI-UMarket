@@ -46,3 +46,5 @@ class UsuarioCV {
         //Metodo que permite enviar o contestar mensaje a un perfil.
     }
 }
+
+module.exports = UsuarioCV;

@@ -1,5 +1,7 @@
 //Publicaciones.js
 
+const { Module } = require("module");
+
 //Clase que representa a una publicacion.
 
 class Publicaciones{
@@ -15,3 +17,5 @@ class Publicaciones{
         //Metodo que guarda la publicacion en la base de datos.
     }
 }
+
+module.exports = Publicaciones;

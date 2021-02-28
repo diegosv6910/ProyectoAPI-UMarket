@@ -33,3 +33,5 @@ class Soporte {
         //Metodo que permite enviar o contestar mensaje a un perfil.
     }
 }
+
+module.exports = Soporte;

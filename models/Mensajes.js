@@ -15,3 +15,5 @@ class Mensajes{
         //Metodo que guarda el mensaje en una base de datos.
     }
 }
+
+module.exports = Mensajes;

@@ -42,3 +42,5 @@ class Distribuidor {
         //Metodo que permite enviar o contestar mensaje a un perfil.
     }
 }
+
+module.exports = Distribuidor;
