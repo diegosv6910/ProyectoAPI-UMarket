@@ -23,7 +23,7 @@ function modificarDistribuidor(req, res) {
   // simulando un usuario previamente existente que el cliente modifica
   var distribuidor1 = new Distribuidor(req.params.id, 'distribuidor1', 'distri1@hotmail.com', '7779006643')
   var modificaciones = req.body;
-  distribuidor1 = { ...usuario1, ...modificaciones }
+  distribuidor1 = { ...distribuidor1, ...modificaciones }
   res.send(distribuidor1)
 }
 

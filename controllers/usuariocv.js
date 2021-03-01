@@ -15,15 +15,15 @@ function crearUsuario(req, res) {
 function obtenerUsuarios(req, res) {
   // Simulando dos usuarios y respondiendolos
   var usuariocv1 = new UsuarioCV(1, 'Diego', 'Morelos', '7771306246', 'correo1@gmail.com', 'urlfoto1');
-  var usuariocv2 = new UsuarioCV(1, 'Daniel', 'CDMX', '7774062533', 'correo2@gmail.com', 'urlfoto2');
+  var usuariocv2 = new UsuarioCV(2, 'Daniel', 'CDMX', '7774062533', 'correo2@gmail.com', 'urlfoto2');
   res.send([usuariocv1, usuariocv2])
 }
 
 function modificarUsuario(req, res) {
   // simulando un usuario previamente existente que el cliente modifica
-  var usuariocv1 = new Usuario(req.params.id, 'Diego', 'Puebla', '7779006643')
+  var usuariocv1 = new UsuarioCV(req.params.id, 'Saul', 'Puebla', '7779006643')
   var modificaciones = req.body;
-  usuariocv1 = { ...usuario1, ...modificaciones }
+  usuariocv1 = { ...usuariocv1, ...modificaciones }
   res.send(usuariocv1)
 }
 

@@ -23,7 +23,7 @@ function modificarAdministrador(req, res) {
   // simulando un usuario previamente existente que el cliente modifica
   var administrador1 = new Administrador(req.params.id, 'Administrador1', 'Puebla', '7779006643')
   var modificaciones = req.body;
-  administrador1 = { ...usuario1, ...modificaciones }
+  administrador1 = { ...administrador1, ...modificaciones }
   res.send(administrador1)
 }
 
