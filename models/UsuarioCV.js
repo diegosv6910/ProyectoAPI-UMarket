@@ -11,6 +11,7 @@ class UsuarioCV {
         this.correo = correo; //Correo Vigente del usuario Compra Venta
         this.credencial = credencial; /*URL donde este alojada la credencial de alumno vigente. En caso
         de ser egresado se pedira una identificacion oficial*/
+
     }
 
     //Metodos.
