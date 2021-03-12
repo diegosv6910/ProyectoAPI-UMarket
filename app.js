@@ -12,21 +12,22 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// **************** COnfiguración de MySQL ********************
+
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('bsn7gx0xxd03i3hgfmyr', 'uder301entdayusn', 'm19QZAexMNFITtkAPiy3', {
-  host: 'bsn7gx0xxd03i3hgfmyr-mysql.services.clever-cloud.com',
-  port: '3306',
-  // una de estas opciones dependiendo el gestor de la base
-  dialect: 'mysql',
+
+const sequelize = new Sequelize('bsn7gx0xxd03i3hgfmyr', 'uder301entdayusn', 'Stw9whGXWwOuzl6ikh41', {
+	host: 'bsn7gx0xxd03i3hgfmyr-mysql.services.clever-cloud.com',
+	dialect: 'mysql',
 })
 
-//Verificamos el correcto funcionamiento de Sequelize.
+// Verificamos que la conexion funcione
 sequelize.authenticate()
 .then(() => {
-  console.log("It's alive!!!!");
+	console.log("It's Alive!!!")
 })
 .catch(err => {
-  console.log('No se conecto :(')
+	console.log('No se conecto')
 })
 
 
