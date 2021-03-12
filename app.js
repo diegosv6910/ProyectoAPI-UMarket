@@ -3,6 +3,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
+
 // Objeto global de la app
 var app = express();
 
@@ -10,6 +11,25 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const Sequelize = require('sequelize')
+const sequelize = new Sequelize('bsn7gx0xxd03i3hgfmyr', 'uder301entdayusn', 'm19QZAexMNFITtkAPiy3', {
+  host: 'bsn7gx0xxd03i3hgfmyr-mysql.services.clever-cloud.com',
+  port: '3306',
+  // una de estas opciones dependiendo el gestor de la base
+  dialect: 'mysql',
+})
+
+//Verificamos el correcto funcionamiento de Sequelize.
+sequelize.authenticate()
+.then(() => {
+  console.log("It's alive!!!!");
+})
+.catch(err => {
+  console.log('No se conecto :(')
+})
+
+
 
 // Agregamos el código de nuestro router (routes/index.js)
 app.use('/v1', require('./routes'));

@@ -9,7 +9,7 @@ const {
 
 router.get('/', obtenerAdministrador)
 router.post('/', crearAdministrador)
-router.put('/:id', modificarAdministrador)
-router.delete('/:id', eliminarAdministrador)
+// router.put('/:id', modificarAdministrador)
+// router.delete('/:id', eliminarAdministrador)
 
 module.exports = router;
