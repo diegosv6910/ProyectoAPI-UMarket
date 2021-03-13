@@ -12,25 +12,22 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// **************** COnfiguración de MySQL ********************
+//Configuracion de MYSQL
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'bsn7gx0xxd03i3hgfmyr-mysql.services.clever-cloud.com',
+  user     : 'uder301entdayusn',
+  password : 'Stw9whGXWwOuzl6ikh41',
+  database : 'bsn7gx0xxd03i3hgfmyr'
+});
 
-const Sequelize = require('sequelize')
-
-const sequelize = new Sequelize('bsn7gx0xxd03i3hgfmyr', 'uder301entdayusn', 'Stw9whGXWwOuzl6ikh41', {
-	host: 'bsn7gx0xxd03i3hgfmyr-mysql.services.clever-cloud.com',
-	dialect: 'mysql',
-})
-
-// Verificamos que la conexion funcione
-sequelize.authenticate()
-.then(() => {
-	console.log("It's Alive!!!")
-})
-.catch(err => {
-	console.log('No se conecto')
-})
-
-
+//Verificando Conexion
+connection.connect();
+ 
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+  if (error) throw error;
+  console.log('The solution is: ', results[0].solution);
+});
 
 // Agregamos el código de nuestro router (routes/index.js)
 app.use('/v1', require('./routes'));

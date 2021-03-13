@@ -40,46 +40,65 @@
 
 // module.exports = Administrador;
 
-// importamos por separado los métodos de Sequelize y los tipos de dato.
-const { Sequelize, DataTypes } = require('sequelize');
-// importamos sequelize con la opción de memory para forzar al gestor a almacenarla en la memoria.
-const sequelize = new Sequelize('mysql::memory:');
+// // importamos por separado los métodos de Sequelize y los tipos de dato.
+// const { Sequelize, DataTypes } = require('sequelize');
+// // importamos sequelize con la opción de memory para forzar al gestor a almacenarla en la memoria.
+// const sequelize = new Sequelize('mysql::memory:');
 
-//creamos el modelo para usuario
-const Administrador = sequelize.define('Administrador', {
-    idAdministrador: {
-    // se indica el tipo de dato de la columna.
-    type: DataTypes.INTEGER,
-    // indicamos que este campo es llave primaria
-    primaryKey : true
-  },
-  nombreAdministrador: {
-    type: DataTypes.STRING,
-    // indicamos que el campo no admite valores null
-    allowNull: false
-  },
-  direccionAdministrador: {
-    type: DataTypes.STRING,
-    // indicamos que el campo no admite valores null
-    allowNull: false
-  },
-  telefonoAdministrador: {
-    type: DataTypes.STRING,
-    // indicamos que el campo no admite valores null
-    allowNull: false
-  },
-  correoAdministrador: {
-    type: DataTypes.STRING,
-    // indicamos que el campo no admite valores null
-    allowNull: false
-  },
-  urlFoto: {
-    type: DataTypes.STRING,
-    // indicamos que el campo no admite valores null
-    allowNull: false
-  },
-  // le decimos a que tabla de nuestra base de datos corresponde.
-},{ tableName: 'administrador'});
+// //creamos el modelo para usuario
+// const Administrador = sequelize.define('Administrador', {
+//     idAdministrador: {
+//     // se indica el tipo de dato de la columna.
+//     type: DataTypes.INTEGER,
+//     // indicamos que este campo es llave primaria
+//     primaryKey : true
+//   },
+//   nombreAdministrador: {
+//     type: DataTypes.STRING,
+//     // indicamos que el campo no admite valores null
+//     allowNull: false
+//   },
+//   direccionAdministrador: {
+//     type: DataTypes.STRING,
+//     // indicamos que el campo no admite valores null
+//     allowNull: false
+//   },
+//   telefonoAdministrador: {
+//     type: DataTypes.STRING,
+//     // indicamos que el campo no admite valores null
+//     allowNull: false
+//   },
+//   correoAdministrador: {
+//     type: DataTypes.STRING,
+//     // indicamos que el campo no admite valores null
+//     allowNull: false
+//   },
+//   urlFoto: {
+//     type: DataTypes.STRING,
+//     // indicamos que el campo no admite valores null
+//     allowNull: false
+//   },
+//   // le decimos a que tabla de nuestra base de datos corresponde.
+// },{ tableName: 'administrador'});
 
-// exportamos el modelo.
-module.exports = Administrador;
+// // exportamos el modelo.
+// module.exports = Administrador;
+
+// //import sequelize
+// var Sequelize = require('sequelize');
+// // importing connection database
+// var sequelize = require('../database');
+
+// var Administrador = sequelize.define('Administrador', {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     primaryKey: true,
+//     autoIncrement: true,
+//   },
+//   name: Sequelize.STRING,
+//   email: Sequelize.STRING,
+//   address: Sequelize.STRING,
+//   phone: Sequelize.BIGINT
+// });
+
+// module.exports = Customers

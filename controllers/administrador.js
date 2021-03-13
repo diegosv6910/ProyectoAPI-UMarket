@@ -41,25 +41,35 @@
 // }
 
 const Administrador = require('../models/Administrador')
+var sqlDetails = require('../database')
+var mysql = require('mysql')
 
 //CREATE
-function crearAdministrador(req, res,next) {
-  // construye una instancia del modelo Usuario con los argumentos que recibe en la petición
-  const usr = Administrador.build(req.body)
-  // Guarda esta instancia, es hasta este momento que se modifica la base de datos.
-  usr.save().then(user => {
-    return res.status(201).json(user.toAuthJSON())
-  }).catch(next);
+function crearAdministrador(req, res) {
+  con = mysql.createConnection(sqlDetails);
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`administrador` (`nombreAdministrador`, `direccionAdministrador`, `telefonoAdministrador`, `correoAdministrador`, `urlFoto`) VALUES ('" + req.body.nombreAdministrador + "', '" + req.body.direccionAdministrador + "', '" + req.body.telefonoAdministrador + "', '" + req.body.correoAdministrador + "','" + req.body.urlFoto + "');";
+  con.connect(function (err) {
+    if(err) throw err;
+    con.query(sql, function (err, result) {
+      if(err) throw err;
+      return res.json(result), con.end();
+    });
+  });
 }
+
+// return res.status(201).json(user.toAuthJSON())
 
 //READ
 function obtenerAdministrador(req, res) {
-  // Hace una consulta en la base de datos.
-  Administrador.findAll().then(users => {
-    return res.json(users)
-  }).catch(error => {
-    return res.sendStatus(401)
-  })
+  con = mysql.createConnection(sqlDetails);
+  con.connect(function (err) {
+    if (err) throw err;
+    con.query("SELECT * FROM administrador", function (err, result) {
+      if(err) throw err;
+      return res.json(result), con.end();
+    });
+  });
+
 }
 
 // exportamos las funciones definidas
