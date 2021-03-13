@@ -1,57 +1,23 @@
-// /*  Archivo controllers/administrador.js
-//  *  Simulando la respuesta de objetos administrador
-//  *  en un futuro aquí se utilizarán los modelos
-//  */
-
-// // importamos el modelo de usuario
-// const Administrador = require('../models/Administrador')
-
-// function crearAdministrador(req, res) {
-//   // Instanciaremos un nuevo usuario utilizando la clase usuario
-//   var administrador = new Administrador(req.body)
-//   res.status(201).send(administrador)
-// }
-
-// function obtenerAdministrador(req, res) {
-//   // Simulando dos usuarios y respondiendolos
-//   var administrador1 = new Administrador(1, 'Admin1', 'Morelos', '7771306246', 'correo1@gmail.com', 'urlfoto1');
-//   var administrador2 = new Administrador(1, 'Admin2', 'CDMX', '7774062533', 'correo2@gmail.com', 'urlfoto2');
-//   res.send([administrador1, administrador2])
-// }
-
-// function modificarAdministrador(req, res) {
-//   // simulando un usuario previamente existente que el cliente modifica
-//   var administrador1 = new Administrador(req.params.id, 'Administrador1', 'Puebla', '7779006643')
-//   var modificaciones = req.body;
-//   administrador1 = { ...administrador1, ...modificaciones }
-//   res.send(administrador1)
-// }
-
-// function eliminarAdministrador(req, res) {
-//   // se simula una eliminación de usuario, regresando un 200
-//   res.status(200).send(`Usuario ${req.params.id} eliminado`);
-// }
-
-// // exportamos las funciones definidas
-// module.exports = {
-//   crearAdministrador,
-//   obtenerAdministrador,
-//   modificarAdministrador,
-//   eliminarAdministrador
-// }
-
 const Administrador = require('../models/Administrador')
 var sqlDetails = require('../database')
 var mysql = require('mysql')
 
 //CREATE
+//Funcion para registrar un administrador
 function crearAdministrador(req, res) {
+  //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
+  //Creamos query con la consulta
   var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`administrador` (`nombreAdministrador`, `direccionAdministrador`, `telefonoAdministrador`, `correoAdministrador`, `urlFoto`) VALUES ('" + req.body.nombreAdministrador + "', '" + req.body.direccionAdministrador + "', '" + req.body.telefonoAdministrador + "', '" + req.body.correoAdministrador + "','" + req.body.urlFoto + "');";
+  //Nos conectamos a la base de datos
   con.connect(function (err) {
+    //Verificamos que no existan errores
     if(err) throw err;
+    //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
       if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
   });
@@ -60,22 +26,80 @@ function crearAdministrador(req, res) {
 // return res.status(201).json(user.toAuthJSON())
 
 //READ
+//Funcion para obtener todos los administradores
 function obtenerAdministrador(req, res) {
+  //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
   con.connect(function (err) {
+    //Verificamos que no existan errores
     if (err) throw err;
-    con.query("SELECT * FROM administrador", function (err, result) {
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM administrador";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
       if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
   });
+}
 
+//UPDATE
+//Funcion para actualizar la informacion de un administrador. (CAMPO UNICO).
+//El campo que se modifica es el nombre
+function modificaAtributoAdministrador(req, res) {
+  //Almacenamos en una variable ID el ID que se envia como parametro.
+  var idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`administrador` SET `nombreAdministrador` = '"+req.body.nombreAdministrador+"' WHERE (`idAdministrador` = '"+idBusqueda+"');"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//UPDATE
+//Funcion para actualizar la informacion de un administrador. (TODOS LOS CAMPOS).
+//Se modifican todos los campos salvo el ID.
+//Recibe un JSON con la informacion a modificar
+function modificaAtributosAdministrador(req, res) {
+  //Almacenamos en una variable ID el ID que se envia como parametro.
+  var idBusqueda = req.body.idAdmin;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`administrador` SET `nombreAdministrador` = '"+req.body.nombreAdministrador+"', `direccionAdministrador` = '"+req.body.direccionAdministrador+"', `telefonoAdministrador` = '"+req.body.telefonoAdministrador+"', `correoAdministrador` = '"+req.body.correoAdministrador+"', `urlFoto` = '"+req.body.urlFoto+"' WHERE (`idAdministrador` = '"+req.body.idAdmin+"');"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
 // exportamos las funciones definidas
 module.exports = {
   crearAdministrador,
   obtenerAdministrador,
-  // modificarAdministrador,
+  modificaAtributoAdministrador,
+  modificaAtributosAdministrador,
   // eliminarAdministrador
 }
