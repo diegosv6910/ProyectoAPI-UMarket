@@ -1,41 +1,225 @@
-/*  Archivo controllers/soporte.js
- *  Simulando la respuesta de objetos soporte
- *  en un futuro aquí se utilizarán los modelos
- */
+var sqlDetails = require('../database')
+var mysql = require('mysql')
 
-// importamos el modelo de usuario
-const Soporte = require('../models/Soporte')
-
-function crearSoporte(req, res) {
-  // Instanciaremos un nuevo usuario utilizando la clase usuario
-  var soporte = new Soporte(req.body)
-  res.status(201).send(soporte)
+//CREATE
+//Funcion para registrar un Soporte
+function crearSoportes(req, res) {
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Creamos query con la consulta
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`soporte` (`nombreSoporte`, `direccionSoporte`, `telefonoSoporte`, `correoSoporte`, `fotoSoporte`) VALUES ('" + req.body.nombreSoporte + "', '" + req.body.direccionSoporte + "', '" + req.body.telefonoSoporte + "', '" + req.body.correoSoporte + "','" + req.body.urlFoto + "');";
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if(err) throw err;
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
-function obtenerSoporte(req, res) {
-  // Simulando dos usuarios y respondiendolos
-  var soporte1 = new Soporte(1, 'Sop1', 'Morelos', '7771306246', 'correo1@gmail.com', 'urlfoto1');
-  var soporte2 = new Soporte(2, 'soporte2', 'CDMX', '7774062533', 'correo2@gmail.com', 'urlfoto2');
-  res.send([soporte1, soporte2])
+// return res.status(201).json(user.toAuthJSON())
+
+//READ
+//Funcion para obtener todos los Soportees
+function obtenerSoportes(req, res) {
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM soporte";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
-function modificarSoporte(req, res) {
-  // simulando un usuario previamente existente que el cliente modifica
-  var soporte1 = new Soporte(req.params.id, 'Soporte1', 'Puebla', '7779006643')
-  var modificaciones = req.body;
-  soporte1 = { ...soporte1, ...modificaciones }
-  res.send(soporte1)
+//READ
+//Funcion para obtener 1 Soporte de acuerdo a su ID
+function obtenerSimpleSoportes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM soporte where idSoporte = '"+idBusqueda+"'";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
-function eliminarSoporte(req, res) {
-  // se simula una eliminación de usuario, regresando un 200
-  res.status(200).send(`Usuario ${req.params.id} eliminado`);
+//READ
+//Funcion para obtener solo un campo de un Soporte
+function obtenerParametroSoportes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+" from bsn7gx0xxd03i3hgfmyr.soporte";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener Soportees que compartan un mismo atributo.
+function obtenerAtributoSoportes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+", COUNT("+parametro+") FROM soporte GROUP BY "+parametro+" HAVING COUNT('"+parametro+"') > 1;"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener Soporte pero con un limite de muestras
+function obtenerLimiteSoporteses(req, res) {
+  //Obtengo el ID enviado como Parametro
+  limite = req.params.limite;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.soporte limit "+limite+"";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//UPDATE
+//Funcion para actualizar la informacion de un Soporte. (CAMPO UNICO).
+//El campo que se modifica es el nombre
+function modificaAtributoSoportes(req, res) {
+  //Almacenamos en una variable ID el ID que se envia como parametro.
+  var idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`soporte` SET `nombreSoporte` = '"+req.body.nombreSoporte+"' WHERE (`idSoporte` = '"+idBusqueda+"');"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//UPDATE
+//Funcion para actualizar la informacion de un Soporte. (TODOS LOS CAMPOS).
+//Se modifican todos los campos salvo el ID.
+//Recibe un JSON con la informacion a modificar
+function modificaAtributosSoportes(req, res) {
+  //Almacenamos en una variable ID el ID que se envia como parametro.
+  var idBusqueda = req.body.idAdmin;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`soporte` SET `nombreSoporte` = '"+req.body.nombreSoporte+"', `direccionSoporte` = '"+req.body.direccionSoporte+"', `telefonoSoporte` = '"+req.body.telefonoSoporte+"', `correoSoporte` = '"+req.body.correoSoporte+"', `fotoSoporte` = '"+req.body.urlFoto+"' WHERE (`idSoporte` = '"+req.body.idAdmin+"');"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//DELETE
+//Funcion para eliminar un Soporte
+function eliminarSoportes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`soporte` WHERE (`idSoporte` = '"+idBusqueda+"');";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
 // exportamos las funciones definidas
 module.exports = {
-  crearSoporte,
-  obtenerSoporte,
-  modificarSoporte,
-  eliminarSoporte
+  crearSoportes,
+  obtenerSoportes,
+  obtenerSimpleSoportes,
+  obtenerLimiteSoporteses,
+  obtenerParametroSoportes,
+  obtenerAtributoSoportes,
+  modificaAtributoSoportes,
+  modificaAtributosSoportes,
+  eliminarSoportes
 }
