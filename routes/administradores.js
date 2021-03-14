@@ -13,11 +13,24 @@ const{
   eliminarAdministrador
 } = require('../controllers/administrador')
 
+//Obtengo los metodos de publicaciones para ocuparlos desde ruta administrador.
 const{
   obtenerLimitePublicacioneses,
   obtenerParametroPublicaciones,
   eliminarPublicaciones
 } = require('../controllers/publicacion');
+
+//Obtengo los metodos de UsuarioCV para ocuparlos desde ruta administrador.
+const{
+  obtenerLimiteUsuarioCVes,
+  eliminarUsuarioCV
+} = require('../controllers/usuariocv')
+
+//Obtengo los metodos de Distribuidores para ocuparlos desde ruta administrador.
+const{
+  obtenerLimiteDistribuidores,
+  eliminarDistribuidor
+} = require('../controllers/distribuidor')
 
 //Ruta para obtener todos los administradores
 router.get('/', obtenerAdministrador)
@@ -39,8 +52,16 @@ router.put('/', modificaAtributosAdministrador)
 router.delete('/:id',eliminarAdministrador)
 // Ruta para eliminar una publicacion
 router.delete('/publicacion/:id',eliminarPublicaciones)
+// Ruta para eliminar un usuarioCV
+router.delete('/usuarioCV/:id',eliminarUsuarioCV)
+// Ruta para eliminar un Distribuidor
+router.delete('/distribuidor/:id',eliminarDistribuidor)
 //Ruta para ver publicaciones Las delimitamos por un limite para que sea mas rapido su vista.
 router.get('/publicaciones/:limite', obtenerLimitePublicacioneses)
+//Ruta para ver UsuariosCV
+router.get('/usuariocv/:limite', obtenerLimiteUsuarioCVes);
+//Ruta para ver distribuidores
+router.get('/distribuidores/:limite', obtenerLimiteDistribuidores);
 //Ruta para ver publicaciones Checamos solo un parametro
 router.get('/publicacionesParametro/:parametro', obtenerParametroPublicaciones)
 module.exports = router;
