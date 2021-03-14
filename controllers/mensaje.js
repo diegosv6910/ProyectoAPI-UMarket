@@ -1,41 +1,200 @@
-/*  Archivo controllers/mensajes.js
- *  Simulando la respuesta de objetos mensajes
- *  en un futuro aquí se utilizarán los modelos
- */
+var sqlDetails = require('../database')
+var mysql = require('mysql')
 
-// importamos el modelo de usuario
-const Mensajes = require('../models/Mensajes')
-
+//CREATE
+//Funcion para registrar una Mensaje
 function crearMensajes(req, res) {
-  // Instanciaremos un nuevo usuario utilizando la clase usuario
-  var mensajes = new Mensajes(req.body)
-  res.status(201).send(mensajes)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Creamos query con la consulta
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`mensajes` (`fechaMensaje`, `remitente`, `destinatario`, `texto`) VALUES ('" + req.body.fechaMensaje + "', '" + req.body.destinatario + "', '" + req.body.remitente + "', '" + req.body.texto + "');";
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if(err) throw err;
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
+
+// return res.status(201).json(user.toAuthJSON())
+
+//READ
+//Funcion para obtener todos los Mensajes
 function obtenerMensajes(req, res) {
-  // Simulando dos usuarios y respondiendolos
-  var mensajes1 = new Mensajes(1, '28/02/2021', 'Diego', 'Daniel');
-  var mensajes2 = new Mensajes(2, '28/02/2021', 'Daniel', 'Diego');
-  res.send([mensajes1, mensajes2])
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM mensajes";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
-function modificarMensajes(req, res) {
-  // simulando un usuario previamente existente que el cliente modifica
-  var mensajes1 = new Mensajes(req.params.id, '28/02/2021', 'Saul')
-  var modificaciones = req.body;
-  mensajes1 = { ...mensajes1, ...modificaciones }
-  res.send(mensajes1)
+//READ
+//Funcion para obtener 1 Mensaje de acuerdo a su ID
+function obtenerSimpleMensajes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM mensajes where idMensaje = '"+idBusqueda+"'";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
+//READ
+//Funcion para obtener solo un campo de un Mensaje
+function obtenerParametroMensajes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+" from bsn7gx0xxd03i3hgfmyr.mensajes";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener Mensajes que compartan un mismo atributo.
+function obtenerAtributoMensajes(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+", COUNT("+parametro+") FROM mensajes GROUP BY "+parametro+" HAVING COUNT('"+parametro+"') > 1;"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener Mensaje pero con un limite de muestras
+function obtenerLimiteMensajeses(req, res) {
+  //Obtengo el ID enviado como Parametro
+  limite = req.params.limite;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.mensajes limit "+limite+"";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//UPDATE
+//Funcion para actualizar la informacion de un Mensaje. (CAMPO UNICO).
+//El campo que se modifica es el texto del mensaje
+function modificaAtributoMensajes(req, res) {
+  //Almacenamos en una variable ID el ID que se envia como parametro.
+  var idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`mensajes` SET `texto` = '"+req.body.texto+"' WHERE (`idMensaje` = '"+idBusqueda+"');"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//DELETE
+//Funcion para eliminar un Mensaje
 function eliminarMensajes(req, res) {
-  // se simula una eliminación de usuario, regresando un 200
-  res.status(200).send(`Usuario ${req.params.id} eliminado`);
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`mensajes` WHERE (`idMensaje` = '"+idBusqueda+"');";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
 }
 
 // exportamos las funciones definidas
 module.exports = {
   crearMensajes,
   obtenerMensajes,
-  modificarMensajes,
+  obtenerSimpleMensajes,
+  obtenerLimiteMensajeses,
+  obtenerParametroMensajes,
+  obtenerAtributoMensajes,
+  modificaAtributoMensajes,
   eliminarMensajes
 }
