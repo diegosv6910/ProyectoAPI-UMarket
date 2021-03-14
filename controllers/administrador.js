@@ -46,6 +46,100 @@ function obtenerAdministrador(req, res) {
   });
 }
 
+//READ
+//Funcion para obtener 1 Administrador de acuerdo a su ID
+function obtenerSimpleAdministrador(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM administrador where idAdministrador = '"+idBusqueda+"'";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener solo un campo de un administrador
+function obtenerParametroAdministrador(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+" from bsn7gx0xxd03i3hgfmyr.administrador";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener Administradores que compartan un mismo atributo.
+function obtenerAtributoAdministrador(req, res) {
+  //Obtengo el ID enviado como Parametro
+  parametro = req.params.parametro;
+  console.log(parametro)
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT "+parametro+", COUNT("+parametro+") FROM administrador GROUP BY "+parametro+" HAVING COUNT('"+parametro+"') > 1;"
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener administrador pero con un limite de muestras
+function obtenerLimiteAdministradores(req, res) {
+  //Obtengo el ID enviado como Parametro
+  limite = req.params.limite;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.administrador limit "+limite+"";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
 //UPDATE
 //Funcion para actualizar la informacion de un administrador. (CAMPO UNICO).
 //El campo que se modifica es el nombre
@@ -95,11 +189,38 @@ function modificaAtributosAdministrador(req, res) {
   });
 }
 
+//DELETE
+//Funcion para eliminar un administrador
+function eliminarAdministrador(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`administrador` WHERE (`idAdministrador` = '"+idBusqueda+"');";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if(err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
 // exportamos las funciones definidas
 module.exports = {
   crearAdministrador,
   obtenerAdministrador,
+  obtenerSimpleAdministrador,
+  obtenerLimiteAdministradores,
+  obtenerParametroAdministrador,
+  obtenerAtributoAdministrador,
   modificaAtributoAdministrador,
   modificaAtributosAdministrador,
-  // eliminarAdministrador
+  eliminarAdministrador
 }
