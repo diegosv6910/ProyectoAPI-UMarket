@@ -1,7 +1,7 @@
 // Estructura del CRUD
 const router = require('express').Router();
 //Importando los metodos de controllers
-const {
+const{
   crearAdministrador,
   obtenerAdministrador,
   obtenerSimpleAdministrador,
@@ -12,6 +12,12 @@ const {
   modificaAtributosAdministrador,
   eliminarAdministrador
 } = require('../controllers/administrador')
+
+const{
+  obtenerLimitePublicacioneses,
+  obtenerParametroPublicaciones,
+  eliminarPublicaciones
+} = require('../controllers/publicacion');
 
 //Ruta para obtener todos los administradores
 router.get('/', obtenerAdministrador)
@@ -31,4 +37,10 @@ router.put('/:id', modificaAtributoAdministrador)
 router.put('/', modificaAtributosAdministrador)
 // Ruta para eliminar un administrador
 router.delete('/:id',eliminarAdministrador)
+// Ruta para eliminar una publicacion
+router.delete('/publicacion/:id',eliminarPublicaciones)
+//Ruta para ver publicaciones Las delimitamos por un limite para que sea mas rapido su vista.
+router.get('/publicaciones/:limite', obtenerLimitePublicacioneses)
+//Ruta para ver publicaciones Checamos solo un parametro
+router.get('/publicacionesParametro/:parametro', obtenerParametroPublicaciones)
 module.exports = router;
