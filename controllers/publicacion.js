@@ -4,18 +4,21 @@ var mysql = require('mysql')
 //CREATE
 //Funcion para registrar una Publicacion
 function crearPublicacionesUsuario(req, res) {
+  //Creamos una variable para almacenar la fecha en la que es creada el mensaje
+  //Y la convertimos a formato ISO 8601 para almacenarla en MYSQL
+  var fecha = new Date().toISOString().slice(0, 19).replace('T', ' ');
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorUPublicacion`, `descripcion`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorUPublicacion + "', '" + req.body.Descripcion + "');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorUPublicacion`, `descripcion`) VALUES ('" + fecha + "', '" + req.body.creadorUPublicacion + "', '" + req.body.Descripcion + "');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
-    if(err) throw err;
+    if (err) throw err;
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -25,18 +28,21 @@ function crearPublicacionesUsuario(req, res) {
 //CREATE
 //Funcion para registrar una Publicacion
 function crearPublicacionesDistribuidor(req, res) {
+  //Creamos una variable para almacenar la fecha en la que es creada el mensaje
+  //Y la convertimos a formato ISO 8601 para almacenarla en MYSQL
+  var fecha = new Date().toISOString().slice(0, 19).replace('T', ' ');
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorDPublicacion`, `descripcion`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorDPublicacion + "', '" + req.body.Descripcion + "');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorDPublicacion`, `descripcion`) VALUES ('" + fecha + "', '" + req.body.creadorDPublicacion + "', '" + req.body.Descripcion + "');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
-    if(err) throw err;
+    if (err) throw err;
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -59,7 +65,7 @@ function obtenerPublicaciones(req, res) {
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -78,11 +84,11 @@ function obtenerSimplePublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT * FROM publicaciones where idPublicaciones = '"+idBusqueda+"'";
+    var sql = "SELECT * FROM publicaciones where idPublicaciones = '" + idBusqueda + "'";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -101,11 +107,11 @@ function obtenerParametroPublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT "+parametro+" from bsn7gx0xxd03i3hgfmyr.publicaciones";
+    var sql = "SELECT " + parametro + " from bsn7gx0xxd03i3hgfmyr.publicaciones";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -124,11 +130,11 @@ function obtenerAtributoPublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT "+parametro+", COUNT("+parametro+") FROM publicaciones GROUP BY "+parametro+" HAVING COUNT('"+parametro+"') > 1;"
+    var sql = "SELECT " + parametro + ", COUNT(" + parametro + ") FROM publicaciones GROUP BY " + parametro + " HAVING COUNT('" + parametro + "') > 1;"
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -147,11 +153,11 @@ function obtenerLimitePublicacioneses(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.publicaciones limit "+limite+"";
+    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.publicaciones limit " + limite + "";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -171,11 +177,11 @@ function modificaAtributoPublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`publicaciones` SET `status` = '"+req.body.Status+"' WHERE (`idPublicaciones` = '"+idBusqueda+"');"
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`publicaciones` SET `status` = '" + req.body.Status + "' WHERE (`idPublicaciones` = '" + idBusqueda + "');"
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -194,11 +200,11 @@ function eliminarPublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`publicaciones` WHERE (`idPublicaciones` = '"+idBusqueda+"');";
+    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`publicaciones` WHERE (`idPublicaciones` = '" + idBusqueda + "');";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });

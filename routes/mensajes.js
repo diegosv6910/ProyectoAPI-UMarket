@@ -3,7 +3,8 @@ const router = require('express').Router();
 //Importando los metodos de controllers
 const {
   obtenerMensajes,
-  obtenerSimpleMensajes,
+  obtenerSimpleMensajesUsuario,
+  obtenerSimpleMensajesDestinatario,
   obtenerLimiteMensajeses,
   obtenerParametroMensajes,
   obtenerAtributoMensajes,
@@ -17,7 +18,9 @@ router.get('/', obtenerMensajes)
 //Ruta para crear Un Mensaje
 router.post('/', crearMensajes)
 //Ruta para obtener un solo Mensajes identificado por su ID
-router.get('/:id', obtenerSimpleMensajes)
+router.get('/usuario/:id', obtenerSimpleMensajesUsuario)
+//Ruta para obtener un solo Mensajes identificado por su ID
+router.get('/distribuidor/:id', obtenerSimpleMensajesDestinatario)
 //Ruta para obtener un numero determinado de Mensajeses
 router.get('/consulta/:limite', obtenerLimiteMensajeses)
 //Ruta para obtener un solo campo de los Mensajeses

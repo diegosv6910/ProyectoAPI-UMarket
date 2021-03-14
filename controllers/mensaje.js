@@ -4,18 +4,21 @@ var mysql = require('mysql')
 //CREATE
 //Funcion para registrar una Mensaje
 function crearMensajes(req, res) {
+  //Creamos una variable para almacenar la fecha en la que es creada el mensaje
+  //Y la convertimos a formato ISO 8601 para almacenarla en MYSQL
+  var fecha = new Date().toISOString().slice(0, 19).replace('T', ' ');
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`mensajes` (`fechaMensaje`, `remitente`, `destinatario`, `texto`) VALUES ('" + req.body.fechaMensaje + "', '" + req.body.destinatario + "', '" + req.body.remitente + "', '" + req.body.texto + "');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`mensajes` (`fechaMensaje`, `remitente`, `destinatario`, `texto`) VALUES ('" + fecha + "', '" + req.body.destinatario + "', '" + req.body.remitente + "', '" + req.body.texto + "');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
-    if(err) throw err;
+    if (err) throw err;
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -39,7 +42,7 @@ function obtenerMensajes(req, res) {
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -48,7 +51,7 @@ function obtenerMensajes(req, res) {
 
 //READ
 //Funcion para obtener 1 Mensaje de acuerdo a su ID
-function obtenerSimpleMensajes(req, res) {
+function obtenerSimpleMensajesUsuario(req, res) {
   //Obtengo el ID enviado como Parametro
   idBusqueda = req.params.id;
   //Creamos la variable con que es una conexion a mysql
@@ -58,11 +61,34 @@ function obtenerSimpleMensajes(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT * FROM mensajes where idMensaje = '"+idBusqueda+"'";
+    var sql = "SELECT * FROM mensajes where remitente = '" + idBusqueda + "'";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
+      //Retornamos un JSON con la informacion creada y terminamos la conexion
+      return res.json(result), con.end();
+    });
+  });
+}
+
+//READ
+//Funcion para obtener 1 Mensaje de acuerdo a su ID
+function obtenerSimpleMensajesDestinatario(req, res) {
+  //Obtengo el ID enviado como Parametro
+  idBusqueda = req.params.id;
+  //Creamos la variable con que es una conexion a mysql
+  con = mysql.createConnection(sqlDetails);
+  //Nos conectamos a la base de datos
+  con.connect(function (err) {
+    //Verificamos que no existan errores
+    if (err) throw err;
+    //Creamos query con la consulta
+    var sql = "SELECT * FROM mensajes where destinatario = '" + idBusqueda + "'";
+    //Ejecutamos el query con la conexion creada
+    con.query(sql, function (err, result) {
+      //Verificamos que no existan errores
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -81,11 +107,11 @@ function obtenerParametroMensajes(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT "+parametro+" from bsn7gx0xxd03i3hgfmyr.mensajes";
+    var sql = "SELECT " + parametro + " from bsn7gx0xxd03i3hgfmyr.mensajes";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -104,11 +130,11 @@ function obtenerAtributoMensajes(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT "+parametro+", COUNT("+parametro+") FROM mensajes GROUP BY "+parametro+" HAVING COUNT('"+parametro+"') > 1;"
+    var sql = "SELECT " + parametro + ", COUNT(" + parametro + ") FROM mensajes GROUP BY " + parametro + " HAVING COUNT('" + parametro + "') > 1;"
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -127,11 +153,11 @@ function obtenerLimiteMensajeses(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.mensajes limit "+limite+"";
+    var sql = "SELECT * from bsn7gx0xxd03i3hgfmyr.mensajes limit " + limite + "";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -151,11 +177,11 @@ function modificaAtributoMensajes(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`mensajes` SET `texto` = '"+req.body.texto+"' WHERE (`idMensaje` = '"+idBusqueda+"');"
+    var sql = "UPDATE `bsn7gx0xxd03i3hgfmyr`.`mensajes` SET `texto` = '" + req.body.texto + "' WHERE (`idMensaje` = '" + idBusqueda + "');"
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -174,11 +200,11 @@ function eliminarMensajes(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`mensajes` WHERE (`idMensaje` = '"+idBusqueda+"');";
+    var sql = "DELETE FROM `bsn7gx0xxd03i3hgfmyr`.`mensajes` WHERE (`idMensaje` = '" + idBusqueda + "');";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
-      if(err) throw err;
+      if (err) throw err;
       //Retornamos un JSON con la informacion creada y terminamos la conexion
       return res.json(result), con.end();
     });
@@ -189,7 +215,8 @@ function eliminarMensajes(req, res) {
 module.exports = {
   crearMensajes,
   obtenerMensajes,
-  obtenerSimpleMensajes,
+  obtenerSimpleMensajesUsuario,
+  obtenerSimpleMensajesDestinatario,
   obtenerLimiteMensajeses,
   obtenerParametroMensajes,
   obtenerAtributoMensajes,

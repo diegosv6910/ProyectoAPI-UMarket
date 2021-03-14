@@ -13,6 +13,19 @@ const {
   eliminarUsuarioCV
 } = require('../controllers/UsuarioCV')
 
+//Obtengo los metodos de Publicaciones para usarlos como Usuario
+const {
+  crearPublicacionesUsuario,
+  obtenerLimitePublicacioneses,
+  eliminarPublicaciones
+} = require('../controllers/publicacion')
+
+//Obtengo los metodos de mensajes para usarilos como Usuario
+const {
+  obtenerSimpleMensajesUsuario,
+  crearMensajes
+} = require('../controllers/mensaje')
+
 //Ruta para obtener todos los UsuarioCVes
 router.get('/', obtenerUsuarioCV)
 //Ruta para obtener un solo UsuarioCV identificado por su ID
@@ -31,4 +44,14 @@ router.put('/:id', modificaAtributoUsuarioCV)
 router.put('/', modificaAtributosUsuarioCV)
 // Ruta para eliminar un UsuarioCV
 router.delete('/:id',eliminarUsuarioCV)
+// Ruta para crear una publicacion
+router.post('/crearPublicacion',crearPublicacionesUsuario)
+//Ruta para ver publicaciones Las delimitamos por un limite para que sea mas rapido su vista.
+router.get('/publicaciones/:limite', obtenerLimitePublicacioneses)
+//Ruta para enviar un mensaje a un distribuidor.
+router.post('/enviarMensaje', crearMensajes);
+//Ruta para ver mensajes enviados por un usuario.
+router.get('/verMensajes/:id', obtenerSimpleMensajesUsuario);
+//Ruta para ver eiminar una publicacion realizada por un usuario.
+router.delete('/eliminarPublicacion/:id', eliminarPublicaciones);
 module.exports = router;
