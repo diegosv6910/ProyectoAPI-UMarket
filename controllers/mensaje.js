@@ -74,7 +74,6 @@ function obtenerSimpleMensajes(req, res) {
 function obtenerParametroMensajes(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos
@@ -98,7 +97,6 @@ function obtenerParametroMensajes(req, res) {
 function obtenerAtributoMensajes(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos

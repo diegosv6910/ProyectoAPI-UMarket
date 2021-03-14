@@ -1,5 +1,6 @@
 // Estructura del CRUD
 const router = require('express').Router();
+//Importando los metodos de controllers
 const {
   obtenerMensajes,
   obtenerSimpleMensajes,

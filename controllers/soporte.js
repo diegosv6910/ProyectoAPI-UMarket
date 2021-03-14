@@ -73,7 +73,6 @@ function obtenerSimpleSoportes(req, res) {
 function obtenerParametroSoportes(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos
@@ -97,7 +96,6 @@ function obtenerParametroSoportes(req, res) {
 function obtenerAtributoSoportes(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos

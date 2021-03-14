@@ -7,7 +7,7 @@ function crearPublicacionesUsuario(req, res) {
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorUPublicacion`, `Status`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorUPublicacion + "', '" + req.body.Status + "');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorUPublicacion`, `descripcion`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorUPublicacion + "', '" + req.body.Descripcion + "');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
@@ -28,7 +28,7 @@ function crearPublicacionesDistribuidor(req, res) {
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorDPublicacion`, `Status`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorDPublicacion + "', '" + req.body.Status + "');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`publicaciones` (`fechaPublicacion`, `creadorDPublicacion`, `descripcion`) VALUES ('" + req.body.fechaPublicacion + "', '" + req.body.creadorDPublicacion + "', '" + req.body.Descripcion + "');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
@@ -78,7 +78,7 @@ function obtenerSimplePublicaciones(req, res) {
     //Verificamos que no existan errores
     if (err) throw err;
     //Creamos query con la consulta
-    var sql = "SELECT * FROM publicaciones where idPublicacioneses = '"+idBusqueda+"'";
+    var sql = "SELECT * FROM publicaciones where idPublicaciones = '"+idBusqueda+"'";
     //Ejecutamos el query con la conexion creada
     con.query(sql, function (err, result) {
       //Verificamos que no existan errores
@@ -94,7 +94,6 @@ function obtenerSimplePublicaciones(req, res) {
 function obtenerParametroPublicaciones(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos
@@ -118,7 +117,6 @@ function obtenerParametroPublicaciones(req, res) {
 function obtenerAtributoPublicaciones(req, res) {
   //Obtengo el ID enviado como Parametro
   parametro = req.params.parametro;
-  console.log(parametro)
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Nos conectamos a la base de datos
