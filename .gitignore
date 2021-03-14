@@ -1,3 +1,5 @@
 node_modules
 /database.sql
 /poblacionyConsultas.pdf
+models
+database.js
