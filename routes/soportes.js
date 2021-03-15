@@ -23,13 +23,15 @@ const{
 //Obtengo los metodos de UsuarioCV para ocuparlos desde ruta soporte.
 const{
   obtenerLimiteUsuarioCVes,
-  eliminarUsuarioCV
+  eliminarUsuarioCV,
+  modificaAtributosUsuarioCV
 } = require('../controllers/usuariocv')
 
 //Obtengo los metodos de Distribuidores para ocuparlos desde ruta soporte.
 const{
   obtenerLimiteDistribuidores,
-  eliminarDistribuidor
+  eliminarDistribuidor,
+  modificaAtributosDistribuidor
 } = require('../controllers/distribuidor')
 
 //Ruta para obtener todos los Soporteses
@@ -64,4 +66,8 @@ router.get('/usuariocv/:limite', obtenerLimiteUsuarioCVes);
 router.get('/distribuidores/:limite', obtenerLimiteDistribuidores);
 //Ruta para ver publicaciones Checamos solo un parametro
 router.get('/publicacionesParametro/:parametro', obtenerParametroPublicaciones)
+//Ruta para modificar todos los atributos de un UsuarioCV. (Identificado por un ID)
+router.put('/usuariocv', modificaAtributosUsuarioCV)
+//Ruta para modificar todos los atributos de un UsuarioCV. (Identificado por un ID)
+router.put('/distribuidor', modificaAtributosDistribuidor)
 module.exports = router;

@@ -7,7 +7,7 @@ function crearDistribuidor(req, res) {
   //Creamos la variable con que es una conexion a mysql
   con = mysql.createConnection(sqlDetails);
   //Creamos query con la consulta
-  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`distribuidor` (`nombreDistribuidor`, `domicilioDistribuidor`, `telefonoDistribuidor`, `correoDistribuidor`, `identificacionDistribuidor`, `ramo`) VALUES ('" + req.body.nombreDistribuidor + "', '" + req.body.direccionDistribuidor + "', '" + req.body.telefonoDistribuidor + "', '" + req.body.correoDistribuidor + "','" + req.body.urlFoto + "', '"+ req.body.ramo +"');";
+  var sql = "INSERT INTO `bsn7gx0xxd03i3hgfmyr`.`distribuidor` (`nombreDistribuidor`, `domicilioDistribuidor`, `telefonoDistribuidor`, `correoDistribuidor`, `identificacionDistribuidor`, `ramo`) VALUES ('" + req.body.nombreDistribuidor + "', '" + req.body.domicilioDistribuidor + "', '" + req.body.telefonoDistribuidor + "', '" + req.body.correoDistribuidor + "','" + req.body.identificacionDistribuidor + "', '"+ req.body.ramo +"');";
   //Nos conectamos a la base de datos
   con.connect(function (err) {
     //Verificamos que no existan errores
