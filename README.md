@@ -138,5 +138,4 @@ https://app.swaggerhub.com/apis/diegosav6910/UMarketDistribuidor/0.1
 https://app.swaggerhub.com/apis/diegosv6910/UMarketUsuarioCV/0.1
 https://app.swaggerhub.com/apis/diegosv6910/UMarketSoporte/0.1
 https://app.swaggerhub.com/apis/diegosv6910/default-title/0.1
-Heroku APP.
-https://umarket1.herokuapp.com/
+
